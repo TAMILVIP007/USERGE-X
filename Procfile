@@ -1,1 +1,1 @@
-web: bash userage
+web: python -m userage
