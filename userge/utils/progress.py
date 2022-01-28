@@ -67,17 +67,16 @@ async def progress(
                 )
             ),
             "".join(
-                (
-                    userge.Config.UNFINISHED_PROGRESS_STR
-                    for i in range(20 - floor(percentage / 5))
-                )
+                userge.Config.UNFINISHED_PROGRESS_STR
+                for _ in range(20 - floor(percentage / 5))
             ),
             round(percentage, 2),
             humanbytes(current),
             humanbytes(total),
             humanbytes(speed),
-            time_to_completion if time_to_completion else "0 s",
+            time_to_completion or "0 s",
         )
+
         try:
             if c_q:
                 await c_q.edit_message_text(progress_str)

@@ -78,8 +78,7 @@ if userge.has_bot:
             _BOT_PM_MEDIA = get_file_id(await userge.bot.get_messages("useless_x", 2))
             return
         if Config.BOT_MEDIA.strip().lower() != "false":
-            match = _TG_LINK_REGEX.search(Config.BOT_MEDIA)
-            if match:
+            if match := _TG_LINK_REGEX.search(Config.BOT_MEDIA):
                 from_chat = str(match.group(1))
                 if from_chat.isdigit():
                     from_chat = int("-100" + from_chat)
@@ -206,8 +205,9 @@ My Master is : {owner_.flname}</b>
             await asyncio.sleep(e.x + 10)
         except Exception as bpm_e:
             await CHANNEL.log(
-                f"**ERROR**: {str(bpm_e)}\n\nFatal Error occured while sending Bot Pm Media"
+                f'**ERROR**: {bpm_e}\n\nFatal Error occured while sending Bot Pm Media'
             )
+
         await check_new_bot_user(message.from_user)
 
     @userge.bot.on_callback_query(filters.regex(pattern=r"^add_to_grp$"))

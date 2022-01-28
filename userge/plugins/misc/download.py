@@ -97,10 +97,8 @@ async def url_download(message: Message, url: str) -> Tuple[str, int]:
                 )
             ),
             "".join(
-                (
-                    Config.UNFINISHED_PROGRESS_STR
-                    for i in range(20 - math.floor(percentage / 5))
-                )
+                Config.UNFINISHED_PROGRESS_STR
+                for _ in range(20 - math.floor(percentage / 5))
             ),
             round(percentage, 2),
             url,
@@ -110,6 +108,7 @@ async def url_download(message: Message, url: str) -> Tuple[str, int]:
             speed,
             estimated_total_time,
         )
+
         count += 1
         if count >= Config.EDIT_SLEEP_TIMEOUT:
             count = 0

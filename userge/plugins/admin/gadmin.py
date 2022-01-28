@@ -468,24 +468,23 @@ async def unmute_usr(message: Message):
 )
 async def zombie_clean(message: Message):
     """remove deleted accounts from tg group"""
-    chat_id = message.chat.id
     flags = message.flags
-    rm_delaccs = "-c" in flags
-    can_clean = bool(
-        not message.from_user
-        or message.from_user
-        and (
-            await message.client.get_chat_member(message.chat.id, message.from_user.id)
-        ).status
-        in ("administrator", "creator")
-    )
-    if rm_delaccs:
-        del_users = 0
-        del_admins = 0
-        del_total = 0
-        del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
+    del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
+    del_users = 0
+    chat_id = message.chat.id
+    if rm_delaccs := "-c" in flags:
+        can_clean = bool(
+            not message.from_user
+            or message.from_user
+            and (
+                await message.client.get_chat_member(message.chat.id, message.from_user.id)
+            ).status
+            in ("administrator", "creator")
+        )
         if can_clean:
             await message.edit("`Hang on!! cleaning zombie accounts from this chat..`")
+            del_admins = 0
+            del_total = 0
             async for member in message.client.iter_chat_members(chat_id):
                 if member.user.is_deleted:
                     try:
@@ -519,8 +518,6 @@ async def zombie_clean(message: Message):
                 r"`i don't have proper permission to do that! (* ￣︿￣)`", del_in=5
             )
     else:
-        del_users = 0
-        del_stats = r"`Zero zombie accounts found in this chat... WOOHOO group is clean.. \^o^/`"
         await message.edit("`🔎 Searching for zombie accounts in this chat..`")
         async for member in message.client.iter_chat_members(chat_id):
             if member.user.is_deleted:
@@ -636,11 +633,10 @@ async def pin_msgs(message: Message):
 )
 async def chatpic_func(message: Message):
     """change chat photo"""
-    chat_id = message.chat.id
     flags = message.flags
-    gpic_set = "-s" in flags
     gpic_del = "-d" in flags
-    if gpic_set:
+    chat_id = message.chat.id
+    if gpic_set := "-s" in flags:
         if message.reply_to_message.photo:
             try:
                 img_id = message.reply_to_message.photo.file_id
