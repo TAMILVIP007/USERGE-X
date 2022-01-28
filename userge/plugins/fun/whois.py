@@ -24,8 +24,7 @@ from userge import Message, userge
 )
 async def who_is(message: Message):
     await message.edit("`Collecting Whois Info.. Hang on!`")
-    user_id = message.input_str
-    if user_id:
+    if user_id := message.input_str:
         try:
             from_user = await message.client.get_users(user_id)
             from_chat = await message.client.get_chat(user_id)
@@ -87,8 +86,6 @@ async def who_is(message: Message):
             os.remove(local_user_photo)
             await message.delete()
         else:
-            cuz = "NO DP Found"
-            if not s_perm:
-                cuz = "Chat Send Media Forbidden"
+            cuz = "Chat Send Media Forbidden" if not s_perm else "NO DP Found"
             message_out_str = "<b>📷 " + cuz + " 📷</b>\n\n" + message_out_str
             await message.edit(message_out_str)

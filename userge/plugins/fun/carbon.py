@@ -91,7 +91,7 @@ async def carbon_(message: Message):
             response = await conv.get_response(mark_read=True)
             while not response.media:
                 response = await conv.get_response(mark_read=True)
-            caption = "\n".join(response.caption.split("\n")[0:2])
+            caption = "\n".join(response.caption.split("\n")[:2])
             file_id = response.document.file_id
             await asyncio.gather(
                 message.delete(),

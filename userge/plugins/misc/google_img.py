@@ -64,8 +64,7 @@ async def gimg_down(message: Message):
     """google images downloader"""
     text = ""
     reply = message.reply_to_message
-    args = (message.filtered_input_str or "").strip()
-    if args:
+    if args := (message.filtered_input_str or "").strip():
         text = args
     elif reply and (reply.text or reply.caption):
         text = reply.text or reply.caption
@@ -177,8 +176,7 @@ def check_path(path_name: str = "GIMG"):
 @pool.run_in_thread
 def gimg_downloader(arguments):
     response = googleimagesdownload()
-    path_ = response.download(arguments)
-    return path_
+    return response.download(arguments)
 
 
 async def upload_image_grp(results, message: Message, doc: bool = False):

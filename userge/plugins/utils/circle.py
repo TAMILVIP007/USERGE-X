@@ -80,8 +80,7 @@ async def crop_vid(input_vid: str, final_path: str):
             vid_valid = True
             height_ = int(stream.get("Height", 0))
             width_ = int(stream.get("Width", 0))
-            aspect_ratio_ = stream.get("DisplayAspectRatio")
-            if aspect_ratio_:
+            if aspect_ratio_ := stream.get("DisplayAspectRatio"):
                 if aspect_ratio_ == "1":
                     correct_aspect = False
             elif width_ and height_:

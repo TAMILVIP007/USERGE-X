@@ -85,8 +85,7 @@ async def Hmm_(message: Message):
 
 
 async def check_and_send(message: Message, *args, **kwargs):
-    replied = message.reply_to_message
-    if replied:
+    if replied := message.reply_to_message:
         await asyncio.gather(message.delete(), replied.reply(*args, **kwargs))
     else:
         await message.edit(*args, **kwargs)
@@ -119,10 +118,7 @@ async def insult_(message: Message):
 )
 async def hi_(message: Message):
     """hi"""
-    input_str = message.input_str
-    if not input_str:
-        await message.edit(choice(HELLOSTR), parse_mode="html")
-    else:
+    if input_str := message.input_str:
         args = input_str.split()
         if len(args) == 2:
             paytext, filler = args
@@ -144,6 +140,8 @@ async def hi_(message: Message):
             paytext * 2 + filler * 4 + paytext * 2 + filler * 2 + paytext * 2,
         )
         await message.edit(pay)
+    else:
+        await message.edit(choice(HELLOSTR), parse_mode="html")
 
 
 @userge.on_cmd(

@@ -63,13 +63,11 @@ class _BaseLib:
         percentage = self.percentage
         return "[{}{}]".format(
             "".join(
-                (Config.FINISHED_PROGRESS_STR for i in range(floor(percentage / 5)))
+                Config.FINISHED_PROGRESS_STR for _ in range(floor(percentage / 5))
             ),
             "".join(
-                (
-                    Config.UNFINISHED_PROGRESS_STR
-                    for i in range(20 - floor(percentage / 5))
-                )
+                Config.UNFINISHED_PROGRESS_STR
+                for _ in range(20 - floor(percentage / 5))
             ),
         )
 
@@ -257,13 +255,11 @@ class SCLib(_BaseLib):
         percentage = self.percentage
         return "[{}{}]".format(
             "".join(
-                (Config.FINISHED_PROGRESS_STR for i in range(floor(percentage / 5)))
+                Config.FINISHED_PROGRESS_STR for _ in range(floor(percentage / 5))
             ),
             "".join(
-                (
-                    Config.UNFINISHED_PROGRESS_STR
-                    for i in range(20 - floor(percentage / 5))
-                )
+                Config.UNFINISHED_PROGRESS_STR
+                for _ in range(20 - floor(percentage / 5))
             ),
         )
 

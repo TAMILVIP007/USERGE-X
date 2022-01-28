@@ -180,21 +180,20 @@ if Config.SPOTIFY_CLIENT_ID and Config.SPOTIFY_CLIENT_SECRET:
             Config.SPOTIFY_MODE = bool(data_["is_active"])
         if os.path.exists(PATH_):
             SP_DATABASE = Database()
-        else:
-            if db_ := await SPOTIFY_DB.find_one({"_id": "database"}):
-                access_token = db_.get("access_token")
-                refresh_token = db_.get("refresh_token")
-                if access_token and refresh_token:
-                    to_create = {
-                        "bio": "",
-                        "access_token": access_token,
-                        "refresh_token": refresh_token,
-                        "telegram_spam": False,
-                        "spotify_spam": False,
-                    }
-                    with open(PATH_, "w+") as outfile:
-                        ujson.dump(to_create, outfile, indent=4)
-                    SP_DATABASE = Database()
+        elif db_ := await SPOTIFY_DB.find_one({"_id": "database"}):
+            access_token = db_.get("access_token")
+            refresh_token = db_.get("refresh_token")
+            if access_token and refresh_token:
+                to_create = {
+                    "bio": "",
+                    "access_token": access_token,
+                    "refresh_token": refresh_token,
+                    "telegram_spam": False,
+                    "spotify_spam": False,
+                }
+                with open(PATH_, "w+") as outfile:
+                    ujson.dump(to_create, outfile, indent=4)
+                SP_DATABASE = Database()
 
     # to stop unwanted spam, we sent these type of message only once. So we have a variable in our database which we check
     # for in return_info. When we send a message, we set this variable to true. After a successful update
@@ -211,15 +210,11 @@ if Config.SPOTIFY_CLIENT_ID and Config.SPOTIFY_CLIENT_SECRET:
                 # we return True so we can test against it and if it this
                 # function returns, we can send a fitting message
                 return True
-        # this is if True is inserted, so if spam = True, so if something went
-        # wrong
-        else:
-            # if it was normal before, we proceed
-            if not SP_DATABASE.return_spam(which):
-                # we save that it is not normal now
-                SP_DATABASE.save_spam(which, True)
-                # we return True so we can send a message
-                return True
+        elif not SP_DATABASE.return_spam(which):
+            # we save that it is not normal now
+            SP_DATABASE.save_spam(which, True)
+            # we return True so we can send a message
+            return True
         # if True wasn't returned before, we can return False now so our test
         # fails and we dont send a message
         return False

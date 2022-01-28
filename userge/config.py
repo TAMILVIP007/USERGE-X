@@ -129,13 +129,12 @@ def get_version() -> str:
         return Config.HBOT_VERSION
     try:
         if "/code-rgb/userge-x" in Config.UPSTREAM_REPO.lower():
-            diff = list(_REPO.iter_commits(f"v{ver}..HEAD"))
-            if diff:
+            if diff := list(_REPO.iter_commits(f"v{ver}..HEAD")):
                 ver = f"{ver}|VULCAN.{len(diff)}"
-        else:
-            diff = list(_REPO.iter_commits(f"{Config.UPSTREAM_REMOTE}/alpha..HEAD"))
-            if diff:
-                ver = f"{ver}|fork-[X].{len(diff)}"
+        elif diff := list(
+            _REPO.iter_commits(f"{Config.UPSTREAM_REMOTE}/alpha..HEAD")
+        ):
+            ver = f"{ver}|fork-[X].{len(diff)}"
         branch = f"@{_REPO.active_branch.name}"
     except Exception as err:
         _LOG.error(err)

@@ -72,25 +72,23 @@ async def find_url_from_msg(message: Message, show_err: bool = True) -> Optional
         if show_err:
             await message.err("No Valid URL was found !", del_in=5)
         return
-    if len(url_e) > 0:
+    if url_e:
         y = url_e[0]
         link = txt[y.offset : (y.offset + y.length)] if y.type == "url" else y.url
         return link, msg
 
 
 def beautify(text: str) -> str:
-    match = search(r"[A-Z]", text)
-    if match:
+    if match := search(r"[A-Z]", text):
         x = match.group(0)
         text = text.replace(x, " " + x)
     text = text.title()
     if "Youtube" in text:
-        out = text.replace("Youtube", "YouTube")
+        return text.replace("Youtube", "YouTube")
     elif "Soundcloud" in text:
-        out = text.replace("Soundcloud", "SoundCloud")
+        return text.replace("Soundcloud", "SoundCloud")
     else:
-        out = text
-    return out
+        return text
 
 
 def get_data(resp: Dict) -> str:
